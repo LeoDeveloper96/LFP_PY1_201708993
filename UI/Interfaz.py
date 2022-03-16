@@ -29,8 +29,9 @@ class Interfaz:
         combo.bind("<<ComboBoxSelected>>", self.opElegida)
         combo.pack(pady=10)
         # creo el text area
-        texto_analizar = Text(root, width=100, height=40)
-        texto_analizar.pack(pady=40)
+        self.texto_analizar = Text(root, width=100, height=40)
+        self.texto_analizar.pack(pady=40)
+
         # creo los botones
         boton_frame = Frame(root)
         boton_frame.pack()
@@ -46,5 +47,6 @@ class Interfaz:
         try:
             archivo = open(nombre_archivo, "r")
             self.contenido += archivo.read()
+            self.texto_analizar.insert('1.0', self.contenido)
         except FileNotFoundError:
             print("archivo no encontrado")

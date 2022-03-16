@@ -3,6 +3,7 @@ from Analizador.ErrorScript import Error
 from prettytable import PrettyTable
 import re
 
+
 class AnalizadorLexico:
 
     def __init__(self):
