@@ -51,11 +51,11 @@ class AnalizadorLexico:
             self.buffer += caracter
             self.columna += 1
             self.estado = "H"
-        elif caracter == '\"':
+        elif caracter == '"':
             self.buffer += caracter
             self.columna += 1
             self.estado = "I"
-        elif caracter == '\'':
+        elif caracter == "'":
             self.buffer += caracter
             self.columna += 1
             self.estado = "M"
@@ -156,10 +156,10 @@ class AnalizadorLexico:
             self.i -= 1
 
     def estadoI(self, caracter):
-        if caracter != "\"":
+        if caracter != '"':
             self.buffer += caracter
             self.columna += 1
-            self.estado = "K"
+            self.estado = "J"
         else:
             self.estado = "A"
             self.agregar_error(self.buffer, self.linea, self.columna)
@@ -167,7 +167,7 @@ class AnalizadorLexico:
             self.buffer = ''
 
     def estadoJ(self, caracter):
-        if caracter != "\"":
+        if caracter != '"':
             self.buffer += caracter
             self.columna += 1
         else:
@@ -184,7 +184,7 @@ class AnalizadorLexico:
             self.buffer += caracter
             self.columna += 1
         else:
-            if re.search("formulario|tipo|valor|fondo|valores|evento",
+            if re.search("formulario|tipo|valor|fondo|valores|evento|nombre",
                          self.buffer.lower()):
                 self.agregar_token(self.buffer, 'reservada', self.linea, self.columna)
                 self.estado = "A"
@@ -196,7 +196,7 @@ class AnalizadorLexico:
                 self.buffer = ''
 
     def estadoM(self, caracter):
-        if caracter != "\'":
+        if caracter != "'":
             self.buffer += caracter
             self.columna += 1
             self.estado = "N"
@@ -207,7 +207,7 @@ class AnalizadorLexico:
             self.buffer = ''
 
     def estadoN(self, caracter):
-        if caracter != "\'":
+        if caracter != "'":
             self.buffer += caracter
             self.columna += 1
         else:
