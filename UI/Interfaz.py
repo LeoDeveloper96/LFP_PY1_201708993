@@ -9,7 +9,16 @@ class Interfaz:
     analizador = AnalizadorLexico()
     contenido = ""
 
-    def opElegida(event):
+    def opElegida(self):
+        if self.combo.get() == "Reporte de tokens":
+            self.reportetTokens()
+        elif self.combo.get() == "Reporte de errores":
+            self.reporteErrores()
+
+    def reportetTokens(self):
+        pass
+
+    def reporteErrores(self):
         pass
 
     def crearInterfaz(self):
@@ -24,10 +33,10 @@ class Interfaz:
                     "Manual técnico",
                     ]
 
-        combo = ttk.Combobox(root, values=opciones)
-        combo.current(0)
-        combo.bind("<<ComboBoxSelected>>", self.opElegida)
-        combo.pack(pady=10)
+        self.combo = ttk.Combobox(root, values=opciones)
+        self.combo.current(0)
+        self.combo.bind("<<ComboBoxSelected>>", self.opElegida)
+        self.combo.pack(pady=10)
         # creo el text area
         self.texto_analizar = Text(root, width=100, height=40)
         self.texto_analizar.pack(pady=40)
