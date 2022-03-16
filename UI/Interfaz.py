@@ -35,11 +35,14 @@ class Interfaz:
         # creo los botones
         boton_frame = Frame(root)
         boton_frame.pack()
-        boton_cargar = Button(boton_frame, text="Analizar", command=self.analizador.analizar(self.contenido))
-        boton_cargar.grid(row=0, column=0)
-        boton_cargar = Button(boton_frame, text="Cargar", command=self.cargarArchivo)
-        boton_cargar.grid(row=0, column=1, padx=10)
+        self.boton_cargar = Button(boton_frame, text="Analizar", command=self.analizarClick)
+        self.boton_cargar.grid(row=0, column=0)
+        self.boton_cargar = Button(boton_frame, text="Cargar", command=self.cargarArchivo)
+        self.boton_cargar.grid(row=0, column=1, padx=10)
         root.mainloop()
+
+    def analizarClick(self):
+        self.analizador.analizar(self.contenido)
 
     def cargarArchivo(self):
         nombre_archivo = filedialog.askopenfilename(initialdir="/", title="Seleccionar un archivo",
