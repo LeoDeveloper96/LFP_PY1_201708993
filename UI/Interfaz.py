@@ -1,4 +1,6 @@
 import tkinter as tk
+import webbrowser
+from io import open
 from tkinter import *
 from tkinter import ttk, filedialog
 import os
@@ -9,17 +11,54 @@ class Interfaz:
     analizador = AnalizadorLexico()
     contenido = ""
 
-    def opElegida(self):
-        if self.combo.get() == "Reporte de tokens":
-            self.reportetTokens()
-        elif self.combo.get() == "Reporte de errores":
-            self.reporteErrores()
+    def cadenaError(self):
+        cadena_temp = ""
+        for error in self.analizador.listaErrores:
+            cadena_temp += "<tr><td>"+str(error.descripcion)+"</td><td>"+str(error.linea)+"</td><td>"+str(error.columna)+"</td></tr>\n"
+        return cadena_temp
 
-    def reportetTokens(self):
-        pass
+    def cadenaTokens(self):
+        cadena_temp = ""
+        for token in self.analizador.listaTokens:
+            cadena_temp += "<tr><td>"+str(token.lexema)+"</td><td>"+str(token.linea)+"</td><td>"+str(token.columna)+"</td></tr>\n"
+        return cadena_temp
 
-    def reporteErrores(self):
-        pass
+    def exportarReporteTokens(self):
+        dir = os.getcwd()
+        archivo = open(dir+"\\Modelos\\ModeloTokens.html", "r")
+        modelo = archivo.read()
+        archivo.close()
+        pagina_resultado = open(dir+"\\Modelos\\tokens.html", "w+")
+        indice = modelo.index("</table>")
+        cadena = self.cadenaTokens()
+        nuevo_contenido = ""
+        nuevo_contenido += modelo[0:indice] + cadena[0] + modelo[indice:len(modelo)]
+        indice2 = nuevo_contenido.rindex("</table>")
+        nuevo_contenido = nuevo_contenido[:indice2] + cadena[1:] + nuevo_contenido[indice2:]
+        pagina_resultado.write(nuevo_contenido)
+        webbrowser.open_new_tab(dir+"\\Modelos\\tokens.html")
+
+    def exportarReporteErrores(self):
+        dir = os.getcwd()
+        archivo = open(dir + "\\Modelos\\ModeloErrores.html", "r")
+        modelo = archivo.read()
+        archivo.close()
+        pagina_resultado = open(dir + "\\Modelos\\errores.html", "w+")
+        indice = modelo.index("</table>")
+        cadena = self.cadenaError()
+        nuevo_contenido = ""
+        nuevo_contenido += modelo[0:indice] + cadena[0] + modelo[indice:len(modelo)]
+        indice2 = nuevo_contenido.rindex("</table>")
+        nuevo_contenido = nuevo_contenido[:indice2] + cadena[1:] + nuevo_contenido[indice2:]
+        pagina_resultado.write(nuevo_contenido)
+        webbrowser.open_new_tab(dir + "\\Modelos\\errores.html")
+
+
+    def opElegida(self, event):
+        if self.clicked.get() == "Reporte de tokens":
+            self.exportarReporteTokens()
+        elif self.clicked.get() == "Reporte de errores":
+            self.exportarReporteErrores()
 
     def crearInterfaz(self):
         root = tk.Tk()
@@ -32,10 +71,9 @@ class Interfaz:
                     "Manual de usuario",
                     "Manual técnico",
                     ]
-
-        self.combo = ttk.Combobox(root, values=opciones)
-        self.combo.current(0)
-        self.combo.bind("<<ComboBoxSelected>>", self.opElegida)
+        self.clicked = StringVar()
+        self.clicked.set(opciones[0])
+        self.combo = OptionMenu(root, self.clicked, *opciones, command=self.opElegida)
         self.combo.pack(pady=10)
         # creo el text area
         self.texto_analizar = Text(root, width=100, height=40)
@@ -54,7 +92,8 @@ class Interfaz:
         self.analizador.analizar(self.contenido)
 
     def cargarArchivo(self):
-        nombre_archivo = filedialog.askopenfilename(initialdir="/", title="Seleccionar un archivo",
+        ruta = os.getcwd() + "\\Archivos Entrada"
+        nombre_archivo = filedialog.askopenfilename(initialdir="ruta", title="Seleccionar un archivo",
                                                     filetypes=(("texto", "*.form"), ("todos", "*.*")))
         try:
             archivo = open(nombre_archivo, "r")
