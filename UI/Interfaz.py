@@ -104,7 +104,7 @@ class Interfaz:
         archivo = open(dir + "\\Modelos\\Formulario.html", "r")
         modelo = archivo.read()
         archivo.close()
-        pagina_resultado = open(dir + "\\Modelos\\formulario.html", "w+")
+        pagina_resultado = open(dir + "\\Modelos\\form.html", "w+")
         indice = modelo.index("</form>")
         cadena = "AA"
         # aqui  mi logica para crear el formulario
@@ -114,7 +114,7 @@ class Interfaz:
         indice2 = nuevo_contenido.rindex("</form>")
         nuevo_contenido = nuevo_contenido[:indice2] + cadena[1:] + nuevo_contenido[indice2:]
         pagina_resultado.write(nuevo_contenido)
-        webbrowser.open_new_tab(dir + "\\Modelos\\formulario.html")
+        webbrowser.open_new_tab(dir + "\\Modelos\\form.html")
 
     def cargarArchivo(self):
         ruta = os.getcwd() + "\\Archivos Entrada"
