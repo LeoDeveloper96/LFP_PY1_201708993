@@ -53,12 +53,19 @@ class Interfaz:
         pagina_resultado.write(nuevo_contenido)
         webbrowser.open_new_tab(dir + "\\Modelos\\errores.html")
 
+    def abrirArchivo(self, nombre):
+        dir = os.getcwd()
+        webbrowser.open_new_tab(dir + "\\Manuales\\"+nombre)
 
     def opElegida(self, event):
         if self.clicked.get() == "Reporte de tokens":
             self.exportarReporteTokens()
         elif self.clicked.get() == "Reporte de errores":
             self.exportarReporteErrores()
+        elif self.clicked.get() == "Manual técnico":
+            self.abrirArchivo("Manual técnico.pdf")
+        elif self.clicked.get() == "Manual de usuario":
+            self.abrirArchivo("Manual de usuario.pdf")
 
     def crearInterfaz(self):
         root = tk.Tk()
@@ -90,6 +97,24 @@ class Interfaz:
 
     def analizarClick(self):
         self.analizador.analizar(self.contenido)
+        self.crearFormulario()
+
+    def crearFormulario(self):
+        dir = os.getcwd()
+        archivo = open(dir + "\\Modelos\\Formulario.html", "r")
+        modelo = archivo.read()
+        archivo.close()
+        pagina_resultado = open(dir + "\\Modelos\\formulario.html", "w+")
+        indice = modelo.index("</form>")
+        cadena = "AA"
+        # aqui  mi logica para crear el formulario
+        #
+        nuevo_contenido = ""
+        nuevo_contenido += modelo[0:indice] + cadena[0] + modelo[indice:len(modelo)]
+        indice2 = nuevo_contenido.rindex("</form>")
+        nuevo_contenido = nuevo_contenido[:indice2] + cadena[1:] + nuevo_contenido[indice2:]
+        pagina_resultado.write(nuevo_contenido)
+        webbrowser.open_new_tab(dir + "\\Modelos\\formulario.html")
 
     def cargarArchivo(self):
         ruta = os.getcwd() + "\\Archivos Entrada"
