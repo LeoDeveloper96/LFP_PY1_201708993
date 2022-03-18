@@ -1,3 +1,4 @@
+import re
 import tkinter as tk
 import webbrowser
 from io import open
@@ -106,9 +107,21 @@ class Interfaz:
         archivo.close()
         pagina_resultado = open(dir + "\\Modelos\\form.html", "w+")
         indice = modelo.index("</form>")
-        cadena = "AA"
-        # aqui  mi logica para crear el formulario
-        #
+        cadena = ""
+        contador = 0
+        # logica para crear el formulario
+        for token in self.analizador.listaTokens:
+            if token.lexema == "tipo" and self.analizador.listaTokens[contador+2].lexema.strip(' " " ') == "etiqueta":
+                cadena += "<label for=\""+self.analizador.listaTokens[contador+2].lexema.strip(' " " ') + "\">Last name:</label><br>\n"
+            elif token.lexema == "tipo" and self.analizador.listaTokens[contador + 2].lexema .strip(' " " ') == "texto":
+                cadena += "<input type=\""+self.analizador.listaTokens[contador+2].lexema.strip(' " " ')+"\" value=\""+self.analizador.listaTokens[contador+6].lexema.strip(' " " ')+"\"><br><br>\n"
+            elif token.lexema == "tipo" and self.analizador.listaTokens[contador + 2].lexema.strip(' " " ') == "grupo-radio":
+                pass
+            elif token.lexema == "tipo" and self.analizador.listaTokens[contador + 2].lexema.strip(' " " ') == "grupo-option":
+                pass
+            elif token.lexema == "tipo" and self.analizador.listaTokens[contador + 2].lexema.strip(' " " ') == "boton":
+                cadena += "<button type=\""+self.analizador.listaTokens[contador+2].lexema.strip(' " " ')+"\" name= \"" + self.analizador.listaTokens[contador+7].lexema.strip(' " " ')+"\""+">Boton</button>\n"
+            contador += 1
         nuevo_contenido = ""
         nuevo_contenido += modelo[0:indice] + cadena[0] + modelo[indice:len(modelo)]
         indice2 = nuevo_contenido.rindex("</form>")
