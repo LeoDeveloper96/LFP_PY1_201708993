@@ -1,11 +1,11 @@
 
 
 function info(){
- alert("info!");
+     var iframe = document.getElementById("iframe");
+     iframe.src = "../Modelos/iframe.html"
 }
 
 function entrada(){
-  alert("entrada!");
      var iframe = document.getElementById("iframe");
      iframe.src = "../Modelos/iframe.html"
 

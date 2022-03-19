@@ -22,7 +22,7 @@ formulario ~>>[
 <
 	tipo: "boton",
 	nombre: "Valor:",
-	evento: "Entrada"
+	evento: "Info"
 >
 ]
 

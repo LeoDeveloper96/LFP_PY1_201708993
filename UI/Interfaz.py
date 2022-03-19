@@ -81,12 +81,25 @@ class Interfaz:
             self.crearInfo()
 
     def crearInfo(self):
-        pass
-
-    def crearFormulario(self):
         #     aqui creo el nuevo formulario
         dir = os.getcwd()
-        archivo = open(dir + "\\Modelos\\Externa.html", "r")
+        archivo = open(dir + "\\Modelos\\Externa2.html", "r")
+        modelo = archivo.read()
+        archivo.close()
+        pagina_resultado = open(dir + "\\Modelos\\iframe.html", "w+")
+        indice = modelo.index("</p>") + 10
+        cadena = "<p>"+self.texto_analizar.get('1.0', END)+"</p>"
+        nuevo_contenido = ""
+        nuevo_contenido += modelo[0:indice] + cadena[0] + modelo[indice:len(modelo)]
+        indice2 = nuevo_contenido.rindex("</p>")
+        nuevo_contenido = nuevo_contenido[:indice2] + cadena[1:] + nuevo_contenido[indice2:]
+        pagina_resultado.write(nuevo_contenido)
+
+
+    def crearFormulario(self):
+        #  aqui creo el nuevo formulario
+        dir = os.getcwd()
+        archivo = open(dir + "\\Modelos\\Externa1.html", "r")
         modelo = archivo.read()
         archivo.close()
         pagina_resultado = open(dir + "\\Modelos\\iframe.html", "w+")
