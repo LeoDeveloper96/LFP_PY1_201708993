@@ -15,6 +15,14 @@ class AnalizadorLexico:
         self.estado = "A"
         self.i = 0
 
+    def existeValor(self, dato):
+        existe = False
+        for item in self.listaTokens:
+            if re.sub("\"","",item.lexema.lower()) == dato.lower():
+                existe = True
+                break
+        return existe
+
     def agregar_token(self, caracter, token, linea, columna):
         self.listaTokens.append(Token(caracter, token, linea, columna))
         self.buffer = ''
