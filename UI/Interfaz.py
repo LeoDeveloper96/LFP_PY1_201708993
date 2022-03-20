@@ -95,7 +95,6 @@ class Interfaz:
         nuevo_contenido = nuevo_contenido[:indice2] + cadena[1:] + nuevo_contenido[indice2:]
         pagina_resultado.write(nuevo_contenido)
 
-
     def crearFormulario(self):
         #  aqui creo el nuevo formulario
         dir = os.getcwd()
@@ -107,17 +106,27 @@ class Interfaz:
         cadena = ""
         contador = 0
         for token in self.analizador.listaTokens:
-            if token.lexema == "tipo" and "etiqueta" in self.analizador.listaTokens[contador+2].lexema :
-                cadena += " <label for=\"fname\">First name:</label><br>\n"
-            elif token.lexema == "tipo" and  "texto" in self.analizador.listaTokens[contador+2].lexema :
-                cadena += " <input type=\"text\" id=\"fname\" name=\"fname\"><br>\n"
+            if token.lexema == "tipo" and "etiqueta" in self.analizador.listaTokens[contador+2].lexema:
+                cadena += " <label>" + re.sub("\"", "", self.analizador.listaTokens[contador+6].lexema) + "</label><br>\n"
+            elif token.lexema == "tipo" and "texto" in self.analizador.listaTokens[contador+2].lexema:
+                cadena += "<input type=\"text\"  placeholder=\"" + re.sub("\"", "", self.analizador.listaTokens[contador+10].lexema) + "\"><br>\n"
+            elif token.lexema == "tipo" and "grupo-option" in self.analizador.listaTokens[contador+2].lexema:
+                cadena += "<select>\n"
+                for token in self.analizador.listaTokens[contador+11:self.analizador.buscarCaracter("]", contador + 9):2]:
+                    cadena += "<option >"+str(token.lexema)+"</option>+\n"
+                cadena += "</select>"
+            #     aqui mi codigo para grupo radio
+            elif token.lexema == "tipo" and "grupo-radio" in self.analizador.listaTokens[contador + 2].lexema:
+                id = 0
+                for token in self.analizador.listaTokens[contador + 11:self.analizador.buscarCaracter("]", contador + 9):2]:
+                    cadena += "<label> <input type=\"radio\">"+token.lexema+"<label>"
+                    id += 1
             contador += 1
         nuevo_contenido = ""
         nuevo_contenido += modelo[0:indice] + cadena[0] + modelo[indice:len(modelo)]
         indice2 = nuevo_contenido.rindex("</form>")
         nuevo_contenido = nuevo_contenido[:indice2] + cadena[1:] + nuevo_contenido[indice2:]
         pagina_resultado.write(nuevo_contenido)
-
 
     def abrirArchivo(self, nombre):
         dir = os.getcwd()

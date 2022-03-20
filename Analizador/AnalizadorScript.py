@@ -15,6 +15,15 @@ class AnalizadorLexico:
         self.estado = "A"
         self.i = 0
 
+    # self.analizador.listaTokens.index("]", contador + 9)
+    def buscarCaracter(self, caracter, inicio):
+        contador = 0
+        for token in self.listaTokens:
+            if re.sub("\"", "", token.lexema).lower() == caracter and contador >= inicio:
+                break
+            contador += 1
+        return contador
+
     def existeValor(self, dato):
         existe = False
         for item in self.listaTokens:
